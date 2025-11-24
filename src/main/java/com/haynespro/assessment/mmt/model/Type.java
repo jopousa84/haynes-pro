@@ -8,7 +8,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Table;
 
 @Entity
@@ -18,9 +19,10 @@ public class Type {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
-	@OneToOne
-    @JoinColumn(name = "MODEL_ID")	
+
+    // This should be ManyToOne since many types can belong to one model
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "MODEL_ID")
 	private Model model;
 	
 	private String name;
@@ -79,7 +81,7 @@ public class Type {
 
 	@Override
 	public String toString() {
-		return "Type [id=" + id + ", model=" + model + ", name=" + name + ", year=" + year + "]";
+		return "Type [id=" + id + ", name=" + name + ", year=" + year + "]";
 	}
 	
 }

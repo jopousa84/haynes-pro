@@ -2,3 +2,11 @@
 .project
 .settings/
 /target/
+/.mvn/
+
+# IntelliJ
+/.idea/
+
+# Keys and secrets
+/src/main/resources/keys/
+

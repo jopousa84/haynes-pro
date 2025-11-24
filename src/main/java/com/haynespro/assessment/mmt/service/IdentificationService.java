@@ -2,6 +2,7 @@ package com.haynespro.assessment.mmt.service;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.haynespro.assessment.mmt.model.Make;
@@ -25,6 +26,7 @@ public class IdentificationService {
 		this.typeRepository = typeRepository;
 	}
 	
+	@Cacheable("makes")
 	public List<Make> getAllMakes() {
 		return makeRepository.findAll();
 	}
@@ -33,20 +35,22 @@ public class IdentificationService {
 		return makeRepository.findById(makeId).get();
 	}
 
+    @Cacheable(value = "modelsByMake", key = "#makeId")
 	public List<Model> getModelsByMakeId(int makeId) {
-		return modelRepository.findAllByMakeId(makeId);
-	}
-	
-	public Model getModelById(int modelId) {
-		return modelRepository.findById(modelId).get();
+        return modelRepository.findAllByMakeIdFetchMake(makeId);
 	}
 
+	public Model getModelById(int modelId) {
+		return modelRepository.findByIdFetchMake(modelId).get();
+	}
+
+    @Cacheable(value = "typesByModel", key = "#modelId")
 	public List<Type> getTypesByModelId(int modelId) {
-		return typeRepository.findAllByModelId(modelId);
+		return typeRepository.findAllByModelIdFetchModelAndMake(modelId);
 	}
 
 	public Type getTypeById(int typeId) {
-		return typeRepository.findById(typeId).get();
+		return typeRepository.findByIdFetchModelAndMake(typeId).get();
 	}
 
 }

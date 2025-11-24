@@ -7,8 +7,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.FetchType;
 
 @Entity
 @Table(name = "MMT_MODEL")
@@ -18,8 +19,9 @@ public class Model {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@OneToOne
-    @JoinColumn(name = "MAKE_ID")	
+    // This should be ManyToOne since many models can belong to one make
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "MAKE_ID")
 	private Make make;
 	
 	private String category;
@@ -77,7 +79,7 @@ public class Model {
 
 	@Override
 	public String toString() {
-		return "Model [id=" + id + ", make=" + make + ", category=" + category + ", name=" + name + "]";
+		return "Model [id=" + id + ", category=" + category + ", name=" + name + "]";
 	}
-	
+
 }

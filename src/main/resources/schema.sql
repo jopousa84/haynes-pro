@@ -17,6 +17,9 @@ CREATE TABLE MMT_MODEL (
 	FOREIGN KEY(MAKE_ID) REFERENCES MMT_MAKE(ID)
 );
 
+-- Add an index on the foreign key column to speed queries filtering by MAKE_ID
+CREATE INDEX IDX_MMT_MODEL_MAKE_ID ON MMT_MODEL(MAKE_ID);
+
 --DROP TABLE MMT_TYPE;
 
 CREATE TABLE MMT_TYPE (
@@ -27,3 +30,6 @@ CREATE TABLE MMT_TYPE (
 	PRIMARY KEY(ID),
 	FOREIGN KEY(MODEL_ID) REFERENCES MMT_MODEL(ID)
 );
+
+-- Add an index on the foreign key column to speed queries filtering by MODEL_ID
+CREATE INDEX IDX_MMT_TYPE_MODEL_ID ON MMT_TYPE(MODEL_ID);
